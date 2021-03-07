@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
 const MaskData = require('maskdata');
 
-exports.signup = (req, res , next) => {
+exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         User.create({
@@ -23,77 +23,53 @@ exports.signup = (req, res , next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-/*// Create a new user
-// Raw SQL: INSERT INTO "Users" (id, firstName, lastName, email, userName, password, jobTitle) VALUES (DEFAULT, 'Jane', 'Doe', 'jane@jane.com', 'janedoe', '123456789', 'Systems Analyst')const createUser = async () => {
-    const jane = await User.create({ firstName: "Jane", lastName: "Doe", email: "jane@jane.com", userName: "janedoe", password: "123456789", jobTitle: "Systems Analyst" })
-    console.log("Jane's auto-generated ID:", jane.id)
 
+exports.login = (req, res) => {
+    const email = MaskData.maskEmail2(req.body.email);
+    const password = req.body.password;
 
-// Delete everyone named "Jane"
-// Raw SQL: DELETE FROM "Users" WHERE firstName = 'Jane'const destroyUser = async () => {
-    const destroyed = await User.destroy({
-        where: {
-            firstName: "Jane"
-        }
+    if (email == null || password == null) {
+        return res.status(400).send({ error: "Veuillez remplir tous les champs!" })
+    }
+    
+    User.findOne({ where:{ email: email }}) 
+        .then((user) => {
+            if (!user) {
+                return res.status(401).send({ message: "Utilisateur inexistant" })
+            } else {
+                bcrypt.compare(password, user.password)
+                .then((valid) => {
+                    if (!valid) {
+                        return res.status(401).send({ message: "Mot de passe incorrect!" })
+                    } else {
+                        res.status(200).send({
+                            id: user.id,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            function: user.function,
+                            email: user.email,
+                            token: jwt.sign({ userId: user.id}, AUTH_TOKEN, { expiresIn: '5h'})
+                        })
+                    }
+                    console.log("Vous êtes connecté! " + user.firstName)
+                })
+                .catch((error) => res.status(400).send(console.log(error)));
+            }
+           
+        })
+        .catch((error) => res.status(500).send(console.log(error)));
+};
+
+exports.getOneUser = (req, res) => {
+    User.findOne({ id: req.params.id})
+    .then((user) => { 
+         res.status(200).send({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            function: user.function,
+         })
     })
-    console.log("Destroyed:", destroyed);
-
-
-// Change lastname "Doe" to "Smith"
-// UPDATE "Users" SET lastName='Smith' WHERE lastName = 'Doe'const updateUser = async () => {
-    const updated = await User.update({ lastName: "Smith" }, {
-        where: {
-            lastName: "Doe"
-        }
-    })
-    console.log("Updated:", updated);
-
-
-// Find all users and only show their email
-// Raw SQL: SELECT email FROM "Users";
-const findAllEmails = async () => {
-    const emails = await User.findAll({
-        attributes: ['email']
-    })
-    console.log("All user emails:", JSON.stringify(emails, null, 4));
+    .catch((error) => res.status(500).send(log(error)))
+    
 }
-// Find all users
-// Raw SQL: SELECT * FROM "Users";
-const findAll = async () => {
-    const users = await User.findAll();
-    console.log("All users:", JSON.stringify(users, null, 4));
-}
-// Find all users where firstname is John
-// Raw SQL: SELECT * FROM "Users" WHERE firstName = "John";
-const findAllJohns = async () => {
-    const johns = await User.findAll({
-        where: {
-            firstName: "John"
-        }
-    })
-    console.log("All users with first name John:", JSON.stringify(johns, null, 4));
-}
-
-// Find all users where firstname is either John or Jane
-// Raw SQL: SELECT * FROM "Users" WHERE firstName = "John" OR firstName = "Jane";
-const findAllJohnsOrJanes = async () => {
-    const johnOrJanes = await User.findAll({
-        where: {
-            [Op.or]: [{ firstName: "John" }, { firstName: "Jane" }]
-        }
-    })
-    console.log("All users with first name John or Jane:", JSON.stringify(johnOrJanes, null, 4));
-}
-
-const run = async () => {
-    await findAll()
-    // await createUser()
-    // await destroyUser()
-    // await updateUser()
-    // await findAllEmails()
-    // await findAllJohns()
-    // await findAllJohnsOrJanes()
-    await process.exit()
-}
-
-run()*/
