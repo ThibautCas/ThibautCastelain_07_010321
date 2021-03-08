@@ -61,6 +61,7 @@ exports.login = (req, res) => {
 };
 
 exports.getOneUser = (req, res) => {
+    console.log(req.params.id);
     User.findOne( {where: { id: req.params.id}})
     .then((user) => { 
          res.status(200).send({
@@ -85,7 +86,7 @@ exports.updateUser = (req, res) => {
 
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
-            models.User.update({ 
+            User.update({ 
             email: MaskData.maskEmail2(req.body.email),
             lastname: req.body.lastname,
             firstname: req.body.firstname,

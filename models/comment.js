@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   Comment.init({
     userId: DataTypes.STRING,
     postId: DataTypes.STRING,
-    dateTime: DataTypes.DATE,
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
     likes: DataTypes.JSON

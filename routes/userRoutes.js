@@ -7,9 +7,9 @@ const auth = require('../middleware/auth');
 
 router.post('/signup', verifyPassword, userCtrl.signup);
 router.post('/login', bouncer.block, userCtrl.login);
-router.get('auth/users/:id', auth, userCtrl.getOneUser);
-router.get('auth/users', auth, userCtrl.getAllUsers);
-router.put('auth/user/:id', auth, userCtrl.updateUser);
-router.delete('auth/user/:id', auth, userCtrl.deleteUser);
+router.get('/auth/user/:id', auth, userCtrl.getOneUser);  // to be checked
+router.get('/auth/users', auth, userCtrl.getAllUsers);
+router.put('/auth/user/:id', auth, userCtrl.updateUser);
+router.delete('/auth/user/:id', auth, userCtrl.deleteUser);
 
 module.exports = router;

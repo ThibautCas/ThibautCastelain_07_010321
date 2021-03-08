@@ -5,6 +5,7 @@ const path = require('path');
 const helmet = require('helmet');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 const app = express();
 
 app.use(helmet());                        //For securized HTTP headers (against XSS attacks)
@@ -15,7 +16,9 @@ app.use((req, res, next) => {
     next();
   });
 app.use(bodyParser.json());
-/*app.use('/images', express.static(path.join(__dirname, 'images')));*/
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api', userRoutes); 
 app.use('/api/auth', postRoutes);
+app.use('/api/auth', commentRoutes);
+
 module.exports = app;

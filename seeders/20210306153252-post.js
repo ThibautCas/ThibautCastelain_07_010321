@@ -16,7 +16,6 @@ module.exports = {
       title: 'First post ever!!!',
       text: 'This is the first post ever',
       createdAt: new Date(),
-      dateTime: new Date(),
     }], {});
   },
 
