@@ -18,7 +18,6 @@ module.exports = {
       function: 'boss',
       password: '$321!pass!123$',
       createdAt: new Date(),
-      updatedAt: new Date()
     }], {});
   },
 

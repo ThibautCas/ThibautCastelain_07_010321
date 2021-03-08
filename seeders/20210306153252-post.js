@@ -11,6 +11,13 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+     return queryInterface.bulkInsert('Posts', [{
+      userId: "1",
+      title: 'First post ever!!!',
+      text: 'This is the first post ever',
+      createdAt: new Date(),
+      dateTime: new Date(),
+    }], {});
   },
 
   down: async (queryInterface, Sequelize) => {
