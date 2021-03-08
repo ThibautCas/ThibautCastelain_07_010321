@@ -60,8 +60,7 @@ exports.login = (req, res) => {
         .catch((error) => res.status(500).send(console.log(error)));
 };
 
-exports.getOneUser = (req, res) => {
-    console.log(req.params.id);
+exports.getOneUserById = (req, res) => {
     User.findOne( {where: { id: req.params.id}})
     .then((user) => { 
          res.status(200).send({
@@ -72,13 +71,29 @@ exports.getOneUser = (req, res) => {
          })
     })
     .catch((error) => res.status(500).send(log(error)))
-    
+}
+
+exports.getOneUserByEmail = (req, res) => {
+    User.findOne( {where: { email: MaskData.maskEmail2(req.body.email)}})
+    .then((user) => { 
+         res.status(200).send({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            function: user.function,
+         })
+    })
+    .catch((error) => res.status(500).send(log(error)))
 }
 
 exports.getAllUsers = (req, res) => {
-    User.findAll()
+    if(req.body.isAdmin) {
+        User.findAll()
     .then((users) => res.status(200).send(users))
     .catch((error) => res.status(404).send(error))
+    } else {
+        return res.status(401).send({ message: "Action non autorisée!" })
+    }
 }
 
 exports.updateUser = (req, res) => {
@@ -106,3 +121,4 @@ exports.deleteUser = (req, res) => {
     .then(() => res.status(200).send({ message: 'La suppression est effectuée!'}))
     .catch((error) => res.status(500).send(error)) 
 }
+
