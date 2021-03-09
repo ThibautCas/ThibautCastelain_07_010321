@@ -16,13 +16,20 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasMany(models.Comment, {
         foreignKey: 'userId',
-      })
+      });
+      User.hasMany(models.PostLike, {
+        foreignKey: 'userId',
+      });
+      User.hasMany(models.CommentLike, {
+        foreignKey: 'userId',
+      });
     }
   };
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     email: DataTypes.STRING,
+    image: DataTypes.STRING,
     function: DataTypes.STRING,
     password: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN,

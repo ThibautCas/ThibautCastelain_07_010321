@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User, {
         foreignKey: 'Id',
         onDelete: 'CASCADE'
-      })
+      });
+      Post.hasMany(models.PostLike, {
+        foreignKey: 'PostId',
+      });
     }
   };
   Post.init({
@@ -22,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
-    likes: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'Post',

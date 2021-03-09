@@ -16,11 +16,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      email: {        
-        allowNull: false,
+      image: {
         type: Sequelize.STRING
       },
+      email: {        
+        allowNull: false,
+        type: Sequelize.STRING,
+        isEmail: true,
+        unique: true
+      },
       function: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       password: {
