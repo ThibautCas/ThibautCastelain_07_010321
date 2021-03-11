@@ -25,7 +25,7 @@ module.exports = {
         isEmail: true,
         unique: true
       },
-      function: {
+      fonction: {
         allowNull: false,
         type: Sequelize.STRING
       },

@@ -13,7 +13,7 @@ exports.signup = (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: MaskData.maskEmail2(req.body.email),
-            function: req.body.function,
+            fonction: req.body.fonction,
             password: hash,
             createdAt: new Date(),
         })
@@ -46,7 +46,7 @@ exports.login = (req, res) => {
                             id: user.id,
                             firstName: user.firstName,
                             lastName: user.lastName,
-                            function: user.function,
+                            fonction: user.fonction,
                             email: user.email,
                             token: jwt.sign({ userId: user.id}, AUTH_TOKEN, { expiresIn: '5h'})
                         })
@@ -67,7 +67,7 @@ exports.getOneUserById = (req, res) => {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            function: user.function,
+            fonction: user.fonction,
          })
     })
     .catch((error) => res.status(500).send(log(error)))
@@ -80,7 +80,7 @@ exports.getOneUserByEmail = (req, res) => {
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            function: user.function,
+            fonction: user.fonction,
          })
     })
     .catch((error) => res.status(500).send(log(error)))

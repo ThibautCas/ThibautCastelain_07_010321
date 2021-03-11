@@ -15,7 +15,7 @@ module.exports = {
       firstName: 'John',
       lastName: 'Doe',
       email: 'demo@demo.com',
-      function: 'boss',
+      fonction: 'boss',
       password: '$321!pass!123$',
       createdAt: new Date(),
     }], {});
