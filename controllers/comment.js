@@ -24,10 +24,10 @@ exports.createComment = (req, res, next) => {
 
 }
 
-exports.getAllComments = (req, res, next) => {
+exports.getComments = (req, res, next) => {
     const order = req.query.order
     
-    Comment.findAll({
+    Comment.findAll({ where: {postId: req.params.id} }, {
         order: [(order != null ? order.split(':') : ['createdAt', 'DESC'])],
         include:[{ model: models.User, attributes: [ 'firstname', 'lastname']}]
     })
