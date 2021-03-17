@@ -12,10 +12,10 @@ exports.createPost = (req, res, next) => {
     Post.create({ 
         title: req.body.title,
         text: req.body.text,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        image: /*`${req.protocol}://${req.get('host')}/images/${req.file.filename}` ||*/ null,
         userId: userId,
         likes: 0,
-        include:[{ model: User, attributes: [ 'firstname', 'lastname']}]
+        include:[{ model: User, attributes: [ 'firstName', 'lastName']}]
     })
     .then((post) => res.status(201).json(post))
     .catch(error => res.status(500).json(error))
@@ -28,7 +28,7 @@ exports.getAllPosts = (req, res, next) => {
     
     Post.findAll({
         order: [(order != null ? order.split(':') : ['createdAt', 'DESC'])],
-        include:[{ model: User, attributes: [ 'firstname', 'lastname']}]
+        include:[{ model: User, attributes: [ 'firstName', 'lastName']}]
     })
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).send(error))
@@ -37,7 +37,7 @@ exports.getAllPosts = (req, res, next) => {
 
 exports.getPostId = (req, res, next) => {
 
-    Post.findOne({ id: req.params.id}, {include: ['firstname', 'lastname']})
+    Post.findOne({ id: req.params.id}, {include: ['firstName', 'lastName']})
     .then((post) => res.status(200).send(post))
     .catch((error) => res.status(500).send(error))
 
