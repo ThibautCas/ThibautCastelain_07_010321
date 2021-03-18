@@ -97,17 +97,18 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    const firstname = req.body.firstname;
+    const firstname = req.body.firstName;
 
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
             User.update({ 
-            email: MaskData.maskEmail2(req.body.email),
-            lastname: req.body.lastname,
-            firstname: req.body.firstname,
+            lastName: req.body.lastName,
+            firstName: req.body.firstName,
             password: hash,
             fonction: req.body.fonction,
-        })
+            isADmin: false,
+            image: null
+        }, {where: {id: req.params.id}})
         .then(() => res.status(201).send({ message: `La modification de l'utilisateur: ${firstname} est effectuée!`}))
         .catch(error => res.status(400).send(log(error)))
     })
