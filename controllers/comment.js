@@ -1,5 +1,4 @@
 const { Comment, User } = require('../models')
-const fs = require('fs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 

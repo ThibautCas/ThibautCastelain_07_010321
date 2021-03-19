@@ -52,7 +52,6 @@ exports.updatePost = (req, res, next) => {
 
 
 exports.deletePost = (req, res, next) => {
-
     Post.destroy({ where: {id: req.params.id}})
         .then(() => res.status(200).send({message: 'Vous avez supprimé une publication!'}))
         .catch((error) => res.status(500).send(error))

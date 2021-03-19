@@ -1,6 +1,4 @@
 const { User } = require('../models')
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
@@ -14,6 +12,7 @@ exports.signup = (req, res) => {
             lastName: req.body.lastName,
             email: MaskData.maskEmail2(req.body.email),
             fonction: req.body.fonction,
+            //image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             password: hash,
             createdAt: new Date(),
         })
@@ -106,8 +105,6 @@ exports.updateUser = (req, res) => {
             firstName: req.body.firstName,
             password: hash,
             fonction: req.body.fonction,
-            isADmin: false,
-            image: null
         }, {where: {id: req.params.id}})
         .then(() => res.status(201).send({ message: `La modification de l'utilisateur: ${firstname} est effectuée!`}))
         .catch(error => res.status(400).send(log(error)))
