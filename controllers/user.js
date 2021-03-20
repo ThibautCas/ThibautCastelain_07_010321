@@ -12,7 +12,7 @@ exports.signup = (req, res) => {
             lastName: req.body.lastName,
             email: MaskData.maskEmail2(req.body.email),
             fonction: req.body.fonction,
-            //image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            image: `${req.protocol}://${req.get('host')}/images/${req.body.image.file.filename}` || null,
             password: hash,
             createdAt: new Date(),
         })
@@ -47,6 +47,7 @@ exports.login = (req, res) => {
                             lastName: user.lastName,
                             fonction: user.fonction,
                             email: user.email,
+                            image: user.image || "",
                             token: jwt.sign({ userId: user.id}, AUTH_TOKEN, { expiresIn: '5h'})
                         })
                     }
