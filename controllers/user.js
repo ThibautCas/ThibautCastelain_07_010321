@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
 const MaskData = require('maskdata');
+const fs = require('fs').promises;
 
 exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 10)
@@ -12,7 +13,7 @@ exports.signup = (req, res) => {
             lastName: req.body.lastName,
             email: MaskData.maskEmail2(req.body.email),
             fonction: req.body.fonction,
-            image: `${req.protocol}://${req.get('host')}/images/${req.body.image.file.filename}` || null,
+            image: req.file ? req.file.filename : null,
             password: hash,
             createdAt: new Date(),
         })
@@ -47,7 +48,8 @@ exports.login = (req, res) => {
                             lastName: user.lastName,
                             fonction: user.fonction,
                             email: user.email,
-                            image: user.image || "",
+                            image: req.file ? req.file.filename : null,
+                            isAdmin: user.isAdmin,
                             token: jwt.sign({ userId: user.id}, AUTH_TOKEN, { expiresIn: '5h'})
                         })
                     }
@@ -86,6 +88,23 @@ exports.getOneUserByEmail = (req, res) => {
     .catch((error) => res.status(500).send(log(error)))
 }
 
+exports.upgradeUser = (req, res) => {
+    User.findOne( {where: { email: MaskData.maskEmail2(req.body.email)}})
+    .then(
+        User.update({
+            isAdmin: true,
+        }, {where: { id: user.id}})
+    )
+    .then((user) => { 
+         res.status(200).send({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            fonction: user.fonction,
+         })
+    })
+    .catch((error) => res.status(500).send(log(error)))
+}
 exports.getAllUsers = (req, res) => {
     if(req.body.isAdmin) {
         User.findAll()

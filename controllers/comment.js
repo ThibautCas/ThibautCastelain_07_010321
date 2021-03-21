@@ -28,7 +28,7 @@ exports.getComments = (req, res, next) => {
     
     Comment.findAll({ where: {postId: req.params.id} }, {
         order: [(order != null ? order.split(':') : ['createdAt', 'DESC'])],
-        include:[{ model: models.User, attributes: [ 'firstname', 'lastname']}]
+        include:[{ model: User, attributes: [ 'firstname', 'lastname']}]
     })
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).send(error))
