@@ -76,7 +76,7 @@ exports.getOneUserById = (req, res) => {
 }
 
 exports.getOneUserByEmail = (req, res) => {
-    User.findOne( {where: { email: MaskData.maskEmail2(req.body.email)}})
+    User.findOne( {where: { email: MaskData.maskEmail2(req.params.email)}})
     .then((user) => { 
          res.status(200).send({
             id: user.id,
@@ -89,18 +89,17 @@ exports.getOneUserByEmail = (req, res) => {
 }
 
 exports.upgradeUser = (req, res) => {
-    User.findOne( {where: { email: MaskData.maskEmail2(req.body.email)}})
-    .then(
+    console.log(req.body.email);
+    console.log(req.params.email);
+    let email = MaskData.maskEmail2(req.body.email);
+    console.log(email);
         User.update({
             isAdmin: true,
-        }, {where: { id: user.id}})
-    )
+        }, {where: { email: email}})
     .then((user) => { 
          res.status(200).send({
-            id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
-            fonction: user.fonction,
          })
     })
     .catch((error) => res.status(500).send(log(error)))

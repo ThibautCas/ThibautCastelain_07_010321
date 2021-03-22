@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "*******",               // Your credentials to connect to MySQL
+    "password": "********",              // Your credentials to connect to MySQL
+    "database": "groupo_development",    // Database you have to create or change with your database
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
