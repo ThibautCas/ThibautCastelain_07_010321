@@ -15,7 +15,7 @@ exports.createComment = (req, res, next) => {
         UserId: userId,
         postId: postId,
         likes: 0,
-        include:[{ model: User, attributes: [ 'firstname', 'lastname']}],
+        include:[{ model: User, attributes: [ 'firstName', 'lastName']}],
     })
     .then((post) => res.status(201).json(post))
     .catch(error => res.status(500).json(error))
@@ -28,9 +28,9 @@ exports.getComments = (req, res, next) => {
     
     Comment.findAll({ where: {postId: req.params.id} }, {
         order: [(order != null ? order.split(':') : ['createdAt', 'DESC'])],
-        include:[{ model: User, attributes: [ 'firstname', 'lastname']}]
+        include:[{ model: User, attributes: [ 'firstName', 'lastName']}]
     })
-    .then(posts => res.status(200).json(posts))
+    .then(comments => res.status(200).json(comments))
     .catch(error => res.status(500).send(error))
 }
 

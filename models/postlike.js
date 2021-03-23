@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       PostLike.belongsTo(models.User, {
-        foreignKey: 'Id',
+        foreignKey: 'id',
         onDelete: 'CASCADE'
       });
       PostLike.belongsTo(models.Post, {
-        foreignKey: 'Id',
+        foreignKey: 'id',
         onDelete: 'CASCADE'
       })
 

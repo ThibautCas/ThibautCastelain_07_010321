@@ -12,7 +12,7 @@ exports.createPost = (req, res, next) => {
     Post.create({ 
         title: req.body.title,
         text: req.body.text,
-        image: /*`${req.protocol}://${req.get('host')}/images/${req.file.filename}` ||*/ null,
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` || null,
         userId: userId,
         likes: 0,
         include:[{ model: User, attributes: [ 'firstName', 'lastName']}]

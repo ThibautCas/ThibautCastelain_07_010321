@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       CommentLike.belongsTo(models.User, {
-        foreignKey: 'Id',
+        foreignKey: 'id',
         onDelete: 'CASCADE'
       });
       CommentLike.belongsTo(models.Comment, {
-        foreignKey: 'Id',
+        foreignKey: 'id',
         onDelete: 'CASCADE'
       })
     }
