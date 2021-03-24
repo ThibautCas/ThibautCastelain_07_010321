@@ -9,15 +9,13 @@ exports.createComment = (req, res, next) => {
     const userId = decodedToken.userId;
 
     Comment.create({ 
-        title: req.body.title,
         text: req.body.text,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         UserId: userId,
-        postId: postId,
+        postId: req.body.postId,
         likes: 0,
         include:[{ model: User, attributes: [ 'firstName', 'lastName']}],
     })
-    .then((post) => res.status(201).json(post))
+    .then((comment) => res.status(201).json(comment))
     .catch(error => res.status(500).json(error))
 
 
