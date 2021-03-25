@@ -4,13 +4,10 @@ require('dotenv').config()
 
 
 exports.createComment = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.AUTH_TOKEN )
-    const userId = decodedToken.userId;
 
     Comment.create({ 
         text: req.body.text,
-        UserId: userId,
+        UserId: req.body.userId,
         postId: req.body.postId,
         likes: 0,
         include:[{ model: User, attributes: [ 'firstName', 'lastName']}],
