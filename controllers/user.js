@@ -89,18 +89,13 @@ exports.getOneUserByEmail = (req, res) => {
 }
 
 exports.upgradeUser = (req, res) => {
-    console.log(req.body.email);
-    console.log(req.params.email);
     let email = MaskData.maskEmail2(req.body.email);
     console.log(email);
         User.update({
             isAdmin: true,
         }, {where: { email: email}})
     .then((user) => { 
-         res.status(200).send({
-            firstName: user.firstName,
-            lastName: user.lastName,
-         })
+         res.status(200).send(user)
     })
     .catch((error) => res.status(500).send(log(error)))
 }

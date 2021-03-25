@@ -11,7 +11,7 @@ router.post('/signup', verifyPassword, multer, userCtrl.signup);
 router.post('/login', bouncer.block, userCtrl.login);
 router.get('/auth/user/ById/:id', auth, userCtrl.getOneUserById);  
 router.get('/auth/user/byEmail/:email', auth, userCtrl.getOneUserByEmail);
-router.put('/auth/user/byEmail/:email', auth, userCtrl.upgradeUser);
+router.put('/auth/user/byEmail', auth, userCtrl.upgradeUser);
 router.get('/auth/users', auth, userCtrl.getAllUsers);
 router.put('/auth/user/update/:id', auth, multer, userCtrl.updateUser);
 router.delete('/auth/user/delete/:id', auth, multer, userCtrl.deleteUser);
