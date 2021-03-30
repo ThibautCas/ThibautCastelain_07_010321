@@ -45,7 +45,12 @@ exports.getPostId = (req, res, next) => {
 
 
 exports.updatePost = (req, res, next) => {
-    Post.updateOne({ where: {id: req.params.id}})
+    console.log(req.body)
+    Post.update({
+        title: req.body.title,
+        text: req.body.text,
+        image: req.body.image
+    }, { where: {id: req.params.id}})
         .then(() => res.status(200).send({message: 'Vous avez modifié votre publication!'}))
         .catch((error) => res.status(400).send(error))      
 }

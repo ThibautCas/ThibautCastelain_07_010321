@@ -6,7 +6,7 @@ exports.createComment = (req, res, next) => {
   console.log(req.body);
   Comment.create({
     text: req.body.text,
-    userId: req.body.userId,
+    userId: req.body.user,
     postId: req.body.postId,
     likes: 0,
     include: [{ model: User, attributes: ["firstName", "lastName"] }],
