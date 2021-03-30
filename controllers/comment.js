@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.createComment = (req, res, next) => {
-  console.log(req.body);
   Comment.create({
     text: req.body.text,
     userId: req.body.user,
@@ -17,13 +16,11 @@ exports.createComment = (req, res, next) => {
 
 exports.getComments = (req, res, next) => {
   const order = req.query.order;
-
   Comment.findAll(
-    { where: { postId: req.params.id } },
-    {
-      order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
+    { where: { postId: req.params.id },
+      order: [(order != null ? order.split(":") : ["createdAt", "DESC"])],
       include: [{ model: User, attributes: ["firstName", "lastName"] }],
-    },
+    }
 
   )
     .then((comments) => res.status(200).json(comments))
