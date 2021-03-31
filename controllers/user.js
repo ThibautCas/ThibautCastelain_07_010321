@@ -6,13 +6,13 @@ const MaskData = require('maskdata');
 const fs = require('fs').promises;
 
 exports.signup = (req, res) => {
-    bcrypt.hash(req.body.data.password, 10)
+    bcrypt.hash(req.body.password, 10)
     .then(hash => {
         User.create({
-            firstName: req.body.data.firstName,
-            lastName: req.body.data.lastName,
-            email: MaskData.maskEmail2(req.body.data.email),
-            fonction: req.body.data.fonction,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: MaskData.maskEmail2(req.body.email),
+            fonction: req.body.fonction,
             image: req.file ? req.file.filename : null,
             password: hash,
             createdAt: new Date(),
