@@ -14,7 +14,6 @@ exports.createPost = (req, res, next) => {
         text: req.body.text,
         //image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` || null,
         userId: userId,
-        likes: 0,
         include:[{ model: User, attributes: [ 'firstName', 'lastName']}]
     })
     .then((post) => res.status(201).json(post))

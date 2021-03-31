@@ -7,6 +7,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+const likePostRoutes = require('./routes/likePostRoutes');
 const app = express();
 
 app.use(helmet());                        //For securized HTTP headers (against XSS attacks)
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api', userRoutes); 
 app.use('/api/auth', postRoutes);
+app.use('/api/auth', likePostRoutes);
 app.use('/api/auth', commentRoutes);
 
 module.exports = app;
