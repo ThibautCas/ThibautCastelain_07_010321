@@ -36,7 +36,7 @@ exports.getAllPosts = (req, res, next) => {
 
 exports.getPostId = (req, res, next) => {
 
-    Post.findOne({ id: req.params.id}, {include: ['firstName', 'lastName']})
+    Post.findOne({where: { id: req.params.id}}, {include: ['firstName', 'lastName']})
     .then((post) => res.status(200).send(post))
     .catch((error) => res.status(500).send(error))
 
