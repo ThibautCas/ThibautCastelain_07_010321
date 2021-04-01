@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
 
-router.post('/signup', verifyPassword, multer, userCtrl.signup);
+router.post('/signup', multer, verifyPassword, userCtrl.signup);
 router.post('/login', bouncer.block, userCtrl.login);
 router.get('/auth/user/ById/:id', auth, userCtrl.getOneUserById);  
 router.get('/auth/user/byEmail/:email', auth, userCtrl.getOneUserByEmail);

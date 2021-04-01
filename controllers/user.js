@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
 const MaskData = require('maskdata');
-const fs = require('fs').promises;
+const fs = require('fs');
 
 exports.signup = (req, res) => {
     bcrypt.hash(req.body.password, 10)
