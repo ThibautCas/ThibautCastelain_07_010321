@@ -48,7 +48,7 @@ exports.updatePost = (req, res, next) => {
     Post.update({
         title: req.body.title,
         text: req.body.text,
-        image: req.body.image
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` || null,
     }, { where: {id: req.params.id}})
         .then(() => res.status(200).send({message: 'Vous avez modifié votre publication!'}))
         .catch((error) => res.status(400).send(error))      

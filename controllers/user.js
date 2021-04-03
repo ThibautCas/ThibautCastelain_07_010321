@@ -119,6 +119,7 @@ exports.updateUser = (req, res) => {
             firstName: req.body.data.firstName,
             password: hash,
             fonction: req.body.data.fonction,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` || null,
         }, {where: {id: req.params.id}})
         .then(() => res.status(201).send({ message: `La modification de l'utilisateur: ${firstname} est effectuée!`}))
         .catch(error => res.status(400).send(log(error)))
