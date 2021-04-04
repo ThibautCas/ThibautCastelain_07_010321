@@ -7,13 +7,12 @@ exports.createPost = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, process.env.AUTH_TOKEN);
   const userId = decodedToken.userId;
-
   Post.create({
     title: req.body.title,
     text: req.body.text,
-    image:
-      `${req.protocol}://${req.get("host")}/images/${req.file.filename}` ||
-      null,
+    image: req.file
+      ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      : null,
     userId: userId,
     include: [{ model: User, attributes: ["firstName", "lastName"] }],
   })
@@ -47,8 +46,8 @@ exports.updatePost = (req, res, next) => {
     {
       title: req.body.title,
       text: req.body.text,
-      image:
-        `${req.protocol}://${req.get("host")}/images/${req.file.filename}` ||
+      image: req.file ?
+        `${req.protocol}://${req.get("host")}/images/${req.file.filename}` :
         null,
     },
     { where: { id: req.params.id } }
@@ -60,19 +59,26 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-    
-  Post.findOne({ where : { id: req.params.id }})
-    .then((post) => {
-      const filename = post.image.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        Post.destroy({ where : { id: req.params.id }})
-          .then(() =>
-            res
-              .status(200)
-              .json({ message: "Vous avez supprimé une publication!" })
-          )
-          .catch((error) => res.status(400).json({ error }));
-      });
-    })
-    .catch((error) => res.status(500).json({ error }));
+  req.file
+    ? Post.findOne({ where: { id: req.params.id } })
+        .then((post) => {
+          const filename = post.image.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {
+            Post.destroy({ where: { id: req.params.id } })
+              .then(() =>
+                res
+                  .status(200)
+                  .json({ message: "Vous avez supprimé une publication!" })
+              )
+              .catch((error) => res.status(400).json({ error }));
+          });
+        })
+        .catch((error) => res.status(500).json({ error }))
+    : Post.destroy({ where: { id: req.params.id } })
+        .then(() =>
+          res
+            .status(200)
+            .json({ message: "Vous avez supprimé une publication!" })
+        )
+        .catch((error) => res.status(400).json({ error }));
 };
