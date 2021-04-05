@@ -41,21 +41,30 @@ exports.getPostId = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-  console.log(req.body);
+  req.file ? 
   Post.update(
     {
       title: req.body.title,
       text: req.body.text,
-      image: req.file ?
-        `${req.protocol}://${req.get("host")}/images/${req.file.filename}` :
-        null,
+      image: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
     },
     { where: { id: req.params.id } }
   )
     .then(() =>
       res.status(200).send({ message: "Vous avez modifié votre publication!" })
     )
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(400).send(error)) 
+    : Post.update(
+      {
+        title: req.body.title,
+        text: req.body.text,
+      },
+      { where: { id: req.params.id } }
+    )
+      .then(() =>
+        res.status(200).send({ message: "Vous avez modifié votre publication!" })
+      )
+      .catch((error) => res.status(400).send(error))
 };
 
 exports.deletePost = (req, res, next) => {
