@@ -167,8 +167,8 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   User.findOne({ where: { id: req.params.id } })
         .then((user) => {
-          const filename = user.image.split("/images/")[1];
-          fs.unlink(`images/${filename}`, () => {
+          user.image ? 
+          fs.unlink(`images/${user.image.split("/images/")[1]}`, () => {
             User.destroy({ where: { id: req.params.id } })
               .then(() =>
                 res
@@ -176,7 +176,14 @@ exports.deleteUser = (req, res) => {
                   .json({ message: "La suppression est effectuée!" })
               )
               .catch((error) => res.status(400).json({ error }));
-          });
+          })
+          : User.destroy({ where: { id: req.params.id } })
+              .then(() =>
+                res
+                  .status(200)
+                  .json({ message: "La suppression est effectuée!" })
+              )
+              .catch((error) => res.status(400).json({ error }));
         })
         .catch((error) => res.status(500).json({ error }))
 };
