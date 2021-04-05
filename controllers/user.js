@@ -14,7 +14,8 @@ exports.signup = (req, res) => {
         lastName: req.body.lastName,
         email: MaskData.maskEmail2(req.body.email),
         fonction: req.body.fonction,
-        image: req.file ? req.file.filename : null,
+        image: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
+                        : null,
         password: hash,
         createdAt: new Date(),
       })

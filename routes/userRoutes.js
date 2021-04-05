@@ -13,7 +13,7 @@ router.get('/auth/user/ById/:id', auth, userCtrl.getOneUserById);
 router.get('/auth/user/byEmail/:email', auth, userCtrl.getOneUserByEmail);
 router.put('/auth/user/byEmail', auth, userCtrl.upgradeUser);
 router.get('/auth/users', auth, userCtrl.getAllUsers);
-router.put('/auth/user/update/:id', auth, multer, userCtrl.updateUser);
-router.delete('/auth/user/delete/:id', auth, multer, userCtrl.deleteUser);
+router.put('/auth/user/update/:id', multer, auth, userCtrl.updateUser);
+router.delete('/auth/user/delete/:id', multer, auth, userCtrl.deleteUser);
 
 module.exports = router;
