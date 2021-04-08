@@ -2,7 +2,6 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const AUTH_TOKEN = process.env.AUTH_TOKEN;
-const MaskData = require("maskdata");
 const fs = require("fs");
 
 exports.signup = (req, res) => {
@@ -12,7 +11,7 @@ exports.signup = (req, res) => {
       User.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email: MaskData.maskEmail2(req.body.email),
+        email: req.body.email,
         fonction: req.body.fonction,
         image: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
                         : null,
@@ -26,7 +25,7 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  const email = MaskData.maskEmail2(req.body.email);
+  const email = req.body.email;
   const password = req.body.password;
 
   if (email == null || password == null) {
@@ -81,7 +80,7 @@ exports.getOneUserById = (req, res) => {
 };
 
 exports.getOneUserByEmail = (req, res) => {
-  User.findOne({ where: { email: MaskData.maskEmail2(req.params.email) } })
+  User.findOne({ where: { email: req.params.email } })
     .then((user) => {
       res.status(200).send({
         id: user.id,
@@ -94,8 +93,7 @@ exports.getOneUserByEmail = (req, res) => {
 };
 
 exports.upgradeUser = (req, res) => {
-  let email = MaskData.maskEmail2(req.body.email);
-  console.log(email);
+  let email = req.body.email;
   User.update(
     {
       isAdmin: true,
@@ -118,17 +116,18 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const firstname = req.body.data.firstName;
+  console.log(req.body);
+  const firstname = req.body.firstName;
   req.file
     ? bcrypt
-        .hash(req.body.data.password, 10)
+        .hash(req.body.password, 10)
         .then((hash) => {
           User.update(
             {
-              lastName: req.body.data.lastName,
-              firstName: req.body.data.firstName,
+              lastName: req.body.lastName,
+              firstName: req.body.firstName,
               password: hash,
-              fonction: req.body.data.fonction,
+              fonction: req.body.fonction,
               image: `${req.protocol}://${req.get("host")}/images/${
                 req.file.filename
               }`,
@@ -148,10 +147,10 @@ exports.updateUser = (req, res) => {
         .then((hash) => {
           User.update(
             {
-              lastName: req.body.data.lastName,
-              firstName: req.body.data.firstName,
+              lastName: req.body.lastName,
+              firstName: req.body.firstName,
               password: hash,
-              fonction: req.body.data.fonction,
+              fonction: req.body.fonction,
             },
             { where: { id: req.params.id } }
           )
